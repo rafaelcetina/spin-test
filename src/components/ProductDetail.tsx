@@ -153,7 +153,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Header */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline">{brand}</Badge>
+              {brand && <Badge variant="outline">{brand}</Badge>}
               <Badge variant="secondary">{category}</Badge>
               <Badge variant={getStockBadgeVariant()}>{getStockText()}</Badge>
             </div>
