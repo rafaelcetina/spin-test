@@ -4,11 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
 import {
   createContext,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
   useReducer,
-  Suspense,
 } from "react";
 import type { SearchFilters } from "@/types/product";
 
