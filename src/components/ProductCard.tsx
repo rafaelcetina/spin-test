@@ -104,9 +104,11 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardContent className="flex-1 p-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Badge variant="outline" className="text-xs">
-              {brand}
-            </Badge>
+            {brand && (
+              <Badge variant="outline" className="text-xs">
+                {brand}
+              </Badge>
+            )}
             <Badge variant="secondary" className="text-xs">
               {category}
             </Badge>

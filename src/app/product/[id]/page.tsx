@@ -26,7 +26,7 @@ async function getProduct(id: string): Promise<Product | null> {
       ...product,
       localPrice: new Intl.NumberFormat("es-ES", {
         style: "currency",
-        currency: "EUR",
+        currency: "MXN",
       }).format(product.price),
       stockStatus:
         product.stock === 0
@@ -58,7 +58,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${product.title} - ${product.brand}`,
+    title: `${product.title} - ${product.brand || "Sin marca"}`,
     description: product.description,
     openGraph: {
       title: product.title,

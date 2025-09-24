@@ -87,7 +87,7 @@ export function ProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       {/* Filtros de búsqueda */}
-      <SearchFilters categories={categories} className="sticky top-4 z-10" />
+      <SearchFilters categories={categories} className="sticky top-0 z-10" />
 
       {/* Resultados */}
       <div className="space-y-6">

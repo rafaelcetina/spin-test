@@ -18,7 +18,7 @@ function getStockStatus(
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("es-ES", {
     style: "currency",
-    currency: "EUR",
+    currency: "MXN",
   }).format(price);
 }
 
