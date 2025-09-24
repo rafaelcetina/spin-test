@@ -301,7 +301,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <CardTitle>Reseñas recientes</CardTitle>
           </CardHeader>
           <CardContent>
-            {reviews.length > 0 ? (
+            {reviews && reviews.length > 0 ? (
               <div className="space-y-4 max-h-96 overflow-y-auto">
                 {reviews.slice(0, 5).map((review, index) => (
                   <div key={index} className="border-b pb-4 last:border-b-0">

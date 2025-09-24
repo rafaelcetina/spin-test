@@ -8,6 +8,7 @@ import {
   useContext,
   useEffect,
   useReducer,
+  Suspense,
 } from "react";
 import type { SearchFilters } from "@/types/product";
 
@@ -68,25 +69,25 @@ function searchFiltersReducer(
     case "SET_SEARCH":
       return {
         ...state,
-        q: action.payload || undefined,
+        q: action.payload,
         page: 1, // Reset page when search changes
       };
     case "SET_CATEGORY":
       return {
         ...state,
-        category: action.payload || "all",
+        category: action.payload,
         page: 1, // Reset page when category changes
       };
     case "SET_SORT":
       return {
         ...state,
-        sort: action.payload || "none",
+        sort: action.payload,
         page: 1, // Reset page when sort changes
       };
     case "SET_ORDER":
       return {
         ...state,
-        order: action.payload || "none",
+        order: action.payload,
         page: 1, // Reset page when order changes
       };
     case "SET_PAGE":
@@ -120,7 +121,8 @@ const SearchFiltersContext = createContext<
   SearchFiltersContextType | undefined
 >(undefined);
 
-export function SearchFiltersProvider({
+// Componente interno que maneja useSearchParams
+function SearchFiltersProviderInner({
   children,
 }: {
   children: React.ReactNode;
@@ -242,6 +244,88 @@ export function SearchFiltersProvider({
     <SearchFiltersContext.Provider value={value}>
       {children}
     </SearchFiltersContext.Provider>
+  );
+}
+
+// Componente de fallback para Suspense
+function SearchFiltersFallback({ children }: { children: React.ReactNode }) {
+  const [state, dispatch] = useReducer(searchFiltersReducer, {
+    ...initialState,
+    isInitialized: true, // Inicializar sin URL params
+  });
+
+  const updateSearch = useCallback((search: string) => {
+    dispatch({ type: "SET_SEARCH", payload: search });
+  }, []);
+
+  const updateCategory = useCallback((category: string) => {
+    dispatch({ type: "SET_CATEGORY", payload: category });
+  }, []);
+
+  const updateSort = useCallback((sort: InternalSort) => {
+    dispatch({ type: "SET_SORT", payload: sort });
+  }, []);
+
+  const updateOrder = useCallback((order: InternalOrder) => {
+    dispatch({ type: "SET_ORDER", payload: order });
+  }, []);
+
+  const updatePage = useCallback((page: number) => {
+    dispatch({ type: "SET_PAGE", payload: page });
+  }, []);
+
+  const updateLimit = useCallback((limit: number) => {
+    dispatch({ type: "SET_LIMIT", payload: limit });
+  }, []);
+
+  const resetFilters = useCallback(() => {
+    dispatch({ type: "RESET_FILTERS" });
+  }, []);
+
+  const getUrlParams = () => {
+    const params = new URLSearchParams();
+    if (state.q) params.set("q", state.q);
+    if (state.category) params.set("category", state.category);
+    if (state.sort) params.set("sort", state.sort);
+    if (state.order) params.set("order", state.order);
+    if (state.page && state.page > 1) params.set("page", state.page.toString());
+    if (state.limit && state.limit !== 12)
+      params.set("limit", state.limit.toString());
+    return params;
+  };
+
+  const value: SearchFiltersContextType = {
+    state,
+    dispatch,
+    updateSearch,
+    updateCategory,
+    updateSort,
+    updateOrder,
+    updatePage,
+    updateLimit,
+    resetFilters,
+    getUrlParams,
+  };
+
+  return (
+    <SearchFiltersContext.Provider value={value}>
+      {children}
+    </SearchFiltersContext.Provider>
+  );
+}
+
+// Provider principal que envuelve con Suspense
+export function SearchFiltersProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense
+      fallback={<SearchFiltersFallback>{children}</SearchFiltersFallback>}
+    >
+      <SearchFiltersProviderInner>{children}</SearchFiltersProviderInner>
+    </Suspense>
   );
 }
 
