@@ -1,9 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 
-// Mock timers
-jest.useFakeTimers();
-
 describe("useDebouncedSearch", () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -16,7 +13,9 @@ describe("useDebouncedSearch", () => {
   });
 
   it("returns initial value immediately", () => {
-    const { result } = renderHook(() => useDebouncedSearch("initial", 300));
+    const { result } = renderHook(() =>
+      useDebouncedSearch("initial", { delay: 300 })
+    );
 
     expect(result.current.debouncedValue).toBe("initial");
     expect(result.current.isDebouncing).toBe(false);
@@ -24,14 +23,16 @@ describe("useDebouncedSearch", () => {
 
   it("debounces value changes", () => {
     const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebouncedSearch(value, delay),
+      ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 300 },
       }
     );
 
     // Change value
-    rerender({ value: "changed", delay: 300 });
+    act(() => {
+      rerender({ value: "changed", delay: 300 });
+    });
 
     // Value should not be updated immediately
     expect(result.current.debouncedValue).toBe("initial");
@@ -56,9 +57,11 @@ describe("useDebouncedSearch", () => {
     );
 
     // Change value multiple times rapidly
-    rerender({ value: "first", delay: 300 });
-    rerender({ value: "second", delay: 300 });
-    rerender({ value: "third", delay: 300 });
+    act(() => {
+      rerender({ value: "first", delay: 300 });
+      rerender({ value: "second", delay: 300 });
+      rerender({ value: "third", delay: 300 });
+    });
 
     // Fast forward time
     act(() => {
@@ -78,7 +81,9 @@ describe("useDebouncedSearch", () => {
       }
     );
 
-    rerender({ value: "changed", delay: 300 });
+    act(() => {
+      rerender({ value: "changed", delay: 300 });
+    });
 
     // Cancel the debounce
     act(() => {
@@ -99,13 +104,15 @@ describe("useDebouncedSearch", () => {
 
   it("handles different delay values", () => {
     const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebouncedSearch(value, delay),
+      ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 500 },
       }
     );
 
-    rerender({ value: "changed", delay: 500 });
+    act(() => {
+      rerender({ value: "changed", delay: 500 });
+    });
 
     // Should still be debouncing at 300ms
     act(() => {
@@ -115,7 +122,7 @@ describe("useDebouncedSearch", () => {
     expect(result.current.debouncedValue).toBe("initial");
     expect(result.current.isDebouncing).toBe(true);
 
-    // Should update at 500ms
+    // Should update at 500ms total
     act(() => {
       jest.advanceTimersByTime(200);
     });
@@ -132,7 +139,9 @@ describe("useDebouncedSearch", () => {
       }
     );
 
-    rerender({ value: "", delay: 300 });
+    act(() => {
+      rerender({ value: "", delay: 300 });
+    });
 
     act(() => {
       jest.advanceTimersByTime(300);
@@ -144,13 +153,15 @@ describe("useDebouncedSearch", () => {
 
   it("handles zero delay", () => {
     const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebouncedSearch(value, delay),
+      ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 0 },
       }
     );
 
-    rerender({ value: "changed", delay: 0 });
+    act(() => {
+      rerender({ value: "changed", delay: 0 });
+    });
 
     // Should update immediately with zero delay
     expect(result.current.debouncedValue).toBe("changed");
@@ -159,13 +170,15 @@ describe("useDebouncedSearch", () => {
 
   it("cleans up timer on unmount", () => {
     const { result, rerender, unmount } = renderHook(
-      ({ value, delay }) => useDebouncedSearch(value, delay),
+      ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 300 },
       }
     );
 
-    rerender({ value: "changed", delay: 300 });
+    act(() => {
+      rerender({ value: "changed", delay: 300 });
+    });
 
     // Unmount before timer completes
     unmount();

@@ -45,10 +45,17 @@ export function useDebouncedSearch(
       return;
     }
 
-    setIsDebouncing(true);
-
     // Crear nuevo AbortController para esta búsqueda
     abortControllerRef.current = new AbortController();
+
+    // Si el delay es 0, actualizar inmediatamente
+    if (delay === 0) {
+      setDebouncedValue(value);
+      setIsDebouncing(false);
+      return;
+    }
+
+    setIsDebouncing(true);
 
     // Configurar timeout para debounce
     timeoutRef.current = setTimeout(() => {

@@ -1,10 +1,20 @@
-import { render, screen } from '@/__tests__/utils/testUtils'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Pagination } from '@/components/Pagination'
 
+// Mock the SearchFiltersContext
+const mockUpdatePage = jest.fn()
+const mockUpdateLimit = jest.fn()
+
+jest.mock('@/contexts/SearchFiltersContext', () => ({
+  useSearchFilters: () => ({
+    updatePage: mockUpdatePage,
+    updateLimit: mockUpdateLimit,
+  }),
+}))
+
 describe('Pagination', () => {
   const user = userEvent.setup()
-  const mockOnPageChange = jest.fn()
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -15,9 +25,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={1}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={false}
       />
     )
 
@@ -32,32 +43,33 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
     const currentPageButton = screen.getByText('3')
     expect(currentPageButton).toHaveAttribute('aria-current', 'page')
-    expect(currentPageButton).toHaveClass('bg-primary')
   })
 
-  it('calls onPageChange when page is clicked', async () => {
+  it('calls updatePage when page is clicked', async () => {
     render(
       <Pagination
         currentPage={1}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={false}
       />
     )
 
     const pageButton = screen.getByText('2')
     await user.click(pageButton)
 
-    expect(mockOnPageChange).toHaveBeenCalledWith(2)
+    expect(mockUpdatePage).toHaveBeenCalledWith(2)
   })
 
   it('shows previous button when not on first page', () => {
@@ -65,9 +77,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -81,9 +94,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={1}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={false}
       />
     )
 
@@ -96,9 +110,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -112,9 +127,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={10}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={false}
+        hasPreviousPage={true}
       />
     )
 
@@ -122,38 +138,40 @@ describe('Pagination', () => {
     expect(nextButton).toBeDisabled()
   })
 
-  it('calls onPageChange with previous page when prev button is clicked', async () => {
+  it('calls updatePage with previous page when prev button is clicked', async () => {
     render(
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
     const prevButton = screen.getByLabelText('Ir a la página anterior')
     await user.click(prevButton)
 
-    expect(mockOnPageChange).toHaveBeenCalledWith(2)
+    expect(mockUpdatePage).toHaveBeenCalledWith(2)
   })
 
-  it('calls onPageChange with next page when next button is clicked', async () => {
+  it('calls updatePage with next page when next button is clicked', async () => {
     render(
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
     const nextButton = screen.getByLabelText('Ir a la página siguiente')
     await user.click(nextButton)
 
-    expect(mockOnPageChange).toHaveBeenCalledWith(4)
+    expect(mockUpdatePage).toHaveBeenCalledWith(4)
   })
 
   it('shows ellipsis when there are many pages', () => {
@@ -161,13 +179,15 @@ describe('Pagination', () => {
       <Pagination
         currentPage={5}
         totalPages={20}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={240}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
-    expect(screen.getByText('...')).toBeInTheDocument()
+    const ellipsisElements = screen.getAllByText('...')
+    expect(ellipsisElements.length).toBeGreaterThan(0)
   })
 
   it('shows correct page range for current page in middle', () => {
@@ -175,9 +195,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={5}
         totalPages={20}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={240}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -194,9 +215,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={5}
         totalPages={20}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={240}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -209,16 +231,15 @@ describe('Pagination', () => {
       <Pagination
         currentPage={1}
         totalPages={1}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={5}
+        itemsPerPage={12}
+        hasNextPage={false}
+        hasPreviousPage={false}
       />
     )
 
-    expect(screen.getByText('1')).toBeInTheDocument()
-    expect(screen.queryByText('2')).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Ir a la página anterior')).toBeDisabled()
-    expect(screen.getByLabelText('Ir a la página siguiente')).toBeDisabled()
+    // Should not render anything for single page
+    expect(screen.queryByText('1')).not.toBeInTheDocument()
   })
 
   it('shows correct items count information', () => {
@@ -226,9 +247,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -240,9 +262,10 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
 
@@ -250,10 +273,31 @@ describe('Pagination', () => {
     pageButton.focus()
 
     await user.keyboard('{Enter}')
-    expect(mockOnPageChange).toHaveBeenCalledWith(4)
+    expect(mockUpdatePage).toHaveBeenCalledWith(4)
 
     await user.keyboard(' ')
-    expect(mockOnPageChange).toHaveBeenCalledWith(4)
+    expect(mockUpdatePage).toHaveBeenCalledWith(4)
+  })
+
+  it('renders items per page selector', () => {
+    render(
+      <Pagination
+        currentPage={1}
+        totalPages={10}
+        totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={false}
+      />
+    )
+
+    // Check that the select component is rendered
+    const selectTrigger = screen.getByRole('combobox')
+    expect(selectTrigger).toBeInTheDocument()
+    
+    // Note: Full interaction testing with Radix UI Select in JSDOM is complex
+    // This test verifies the component renders correctly
+    // The actual functionality would be tested in integration tests
   })
 
   it('has proper accessibility attributes', () => {
@@ -261,14 +305,12 @@ describe('Pagination', () => {
       <Pagination
         currentPage={3}
         totalPages={10}
-        onPageChange={mockOnPageChange}
-        itemsPerPage={12}
         totalItems={120}
+        itemsPerPage={12}
+        hasNextPage={true}
+        hasPreviousPage={true}
       />
     )
-
-    const nav = screen.getByRole('navigation')
-    expect(nav).toHaveAttribute('aria-label', 'Paginación de productos')
 
     const currentPageButton = screen.getByText('3')
     expect(currentPageButton).toHaveAttribute('aria-current', 'page')

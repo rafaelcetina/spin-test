@@ -1,6 +1,58 @@
-import { render, screen } from '@/__tests__/utils/testUtils'
+import { render, screen } from '@testing-library/react'
 import { ProductCard } from '@/components/ProductCard'
-import { mockProduct } from '@/__tests__/__mocks__/mockData'
+import { Product } from '@/types/product'
+
+const mockProduct: Product = {
+  id: 1,
+  title: "iPhone 9",
+  description: "An apple mobile which is nothing like apple",
+  price: 549,
+  discountPercentage: 12.96,
+  rating: 4.69,
+  stock: 94,
+  brand: "Apple",
+  category: "smartphones",
+  thumbnail: "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
+  images: [
+    "https://cdn.dummyjson.com/product-images/1/1.jpg",
+    "https://cdn.dummyjson.com/product-images/1/2.jpg",
+    "https://cdn.dummyjson.com/product-images/1/3.jpg",
+    "https://cdn.dummyjson.com/product-images/1/4.jpg",
+    "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
+  ],
+  localPrice: "$549.00 MXN",
+  stockStatus: "in_stock",
+  fetchedAt: "2024-01-01T00:00:00.000Z",
+  // Required fields for Product interface
+  tags: ["smartphone", "apple", "mobile"],
+  sku: "IPHONE9-001",
+  weight: 0.194,
+  dimensions: {
+    width: 5.5,
+    height: 11.5,
+    depth: 0.8,
+  },
+  warrantyInformation: "1 year manufacturer warranty",
+  shippingInformation: "Free shipping on orders over $50",
+  availabilityStatus: "in_stock",
+  reviews: [
+    {
+      rating: 5,
+      comment: "Excellent phone!",
+      date: "2024-01-15",
+      reviewerName: "John Doe",
+      reviewerEmail: "john@example.com",
+    },
+  ],
+  returnPolicy: "30-day return policy",
+  minimumOrderQuantity: 1,
+  meta: {
+    createdAt: "2024-01-01T00:00:00.000Z",
+    updatedAt: "2024-01-01T00:00:00.000Z",
+    barcode: "1234567890123",
+    qrCode: "QR123456789",
+  },
+};
 
 describe('ProductCard', () => {
   it('renders product information correctly', () => {

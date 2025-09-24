@@ -93,7 +93,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
     }
   };
 
-  const averageRating = reviews.length > 0 
+  const averageRating = reviews && reviews.length > 0 
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
     : rating;
 
@@ -174,7 +174,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">
-                {averageRating.toFixed(1)} ({reviews.length} reseñas)
+                {averageRating.toFixed(1)} ({reviews?.length || 0} reseñas)
               </span>
             </div>
 

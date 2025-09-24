@@ -19,7 +19,7 @@ export interface Product {
   warrantyInformation: string;
   shippingInformation: string;
   availabilityStatus: string;
-  reviews: Review[];
+  reviews?: Review[];
   returnPolicy: string;
   minimumOrderQuantity: number;
   meta: {
@@ -32,7 +32,7 @@ export interface Product {
   images: string[];
   // Transformaciones añadidas por nuestro proxy
   localPrice?: string;
-  stockStatus?: 'in_stock' | 'low_stock' | 'out_of_stock';
+  stockStatus?: "in_stock" | "low_stock" | "out_of_stock";
   fetchedAt?: string;
 }
 
@@ -60,8 +60,8 @@ export interface Category {
 export interface SearchFilters {
   q?: string;
   category?: string;
-  sort?: 'price' | 'rating' | 'title';
-  order?: 'asc' | 'desc';
+  sort?: "price" | "rating" | "title";
+  order?: "asc" | "desc";
   page?: number;
   limit?: number;
 }
