@@ -15,7 +15,7 @@ import type { Category } from "@/types/product";
 export function ProductsPage() {
   const { state } = useSearchFilters();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [_categoriesLoading, setCategoriesLoading] = useState(true);
 
   const {
     products,

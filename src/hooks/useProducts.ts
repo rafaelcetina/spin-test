@@ -149,14 +149,14 @@ export function useProducts(
         setLoading(false);
       }
     }
-  }, [q, category, sort, order, page, limit, retries, delay]);
+  }, [options, q, category, sort, order, page, limit, retries, delay]);
 
   const refetch = useCallback(() => {
     // Limpiar cache para forzar refetch
     const cacheKey = createCacheKey(options);
     cache.delete(cacheKey);
     fetchProducts();
-  }, [fetchProducts, q, category, sort, order, page, limit, retries, delay]);
+  }, [fetchProducts, options]);
 
   useEffect(() => {
     fetchProducts();

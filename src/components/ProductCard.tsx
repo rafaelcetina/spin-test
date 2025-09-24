@@ -25,7 +25,6 @@ export function ProductCard({ product }: ProductCardProps) {
     title,
     description,
     price,
-    localPrice,
     rating,
     stock,
     stockStatus,

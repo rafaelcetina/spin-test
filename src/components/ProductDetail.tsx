@@ -28,11 +28,9 @@ interface ProductDetailProps {
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const {
-    id,
     title,
     description,
     price,
-    localPrice,
     rating,
     stock,
     stockStatus,

@@ -181,7 +181,7 @@ export function SearchFiltersProvider({
         router.replace(newUrl, { scroll: false });
       }
     }
-  }, [state, router]);
+  }, [state, router, searchParams]);
 
   const updateSearch = useCallback((search: string) => {
     dispatch({ type: "SET_SEARCH", payload: search });
