@@ -8,7 +8,7 @@ const cache = new Map<string, { data: ProductsResponse; timestamp: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
 function getStockStatus(
-  stock: number,
+  stock: number
 ): "in_stock" | "low_stock" | "out_of_stock" {
   if (stock === 0) return "out_of_stock";
   if (stock <= 5) return "low_stock";
@@ -34,7 +34,7 @@ function transformProduct(product: Product): Product {
 async function fetchWithRetry(
   url: string,
   retries: number = 0,
-  maxRetries: number = 3,
+  maxRetries: number = 3
 ): Promise<Response> {
   try {
     const response = await fetch(url, {
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
         message: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
     console.error("Error fetching categories:", error);
     return NextResponse.json(
       { error: "Failed to fetch categories" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
