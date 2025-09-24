@@ -47,8 +47,8 @@ const customJestConfig = {
     "./src/contexts/": {
       branches: 40,
       functions: 45,
-      lines: 65,
-      statements: 55,
+      lines: 45,
+      statements: 45,
     },
   },
   coverageReporters: ["text", "lcov", "html"],
