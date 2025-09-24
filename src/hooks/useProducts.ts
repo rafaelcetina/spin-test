@@ -33,7 +33,7 @@ function createCacheKey(options: UseProductsOptions): string {
 }
 
 export function useProducts(
-  options: UseProductsOptions = {},
+  options: UseProductsOptions = {}
 ): UseProductsReturn {
   const {
     q,
