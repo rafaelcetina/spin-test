@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Product } from '@/types/product';
-import { 
-  Star, 
-  ShoppingCart, 
-  ArrowLeft, 
-  Truck, 
-  Shield, 
-  RotateCcw,
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import {
+  ArrowLeft,
   Package,
+  RotateCcw,
+  Ruler,
+  Shield,
+  ShoppingCart,
+  Star,
+  Truck,
   Weight,
-  Ruler
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { PriceChart } from '@/components/PriceChart';
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { PriceChart } from "@/components/PriceChart";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import type { Product } from "@/types/product";
 
 interface ProductDetailProps {
   product: Product;
@@ -54,48 +54,49 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'dd MMMM yyyy', { locale: es });
+      return format(new Date(dateString), "dd MMMM yyyy", { locale: es });
     } catch {
-      return 'Fecha no disponible';
+      return "Fecha no disponible";
     }
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
+    return new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
     }).format(price);
   };
 
   const getStockBadgeVariant = () => {
     switch (stockStatus) {
-      case 'in_stock':
-        return 'default';
-      case 'low_stock':
-        return 'secondary';
-      case 'out_of_stock':
-        return 'destructive';
+      case "in_stock":
+        return "default";
+      case "low_stock":
+        return "secondary";
+      case "out_of_stock":
+        return "destructive";
       default:
-        return 'outline';
+        return "outline";
     }
   };
 
   const getStockText = () => {
     switch (stockStatus) {
-      case 'in_stock':
-        return 'En stock';
-      case 'low_stock':
-        return 'Poco stock';
-      case 'out_of_stock':
-        return 'Sin stock';
+      case "in_stock":
+        return "En stock";
+      case "low_stock":
+        return "Poco stock";
+      case "out_of_stock":
+        return "Sin stock";
       default:
         return `${stock} unidades`;
     }
   };
 
-  const averageRating = reviews && reviews.length > 0 
-    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
-    : rating;
+  const averageRating =
+    reviews && reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : rating;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -114,26 +115,29 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <div className="space-y-4">
           <div className="aspect-square relative overflow-hidden rounded-lg border">
             <Image
-              src={images[0] || '/placeholder-product.jpg'}
+              src={images[0] || "/placeholder-product.jpg"}
               alt={title}
               fill
               className="object-cover"
               priority
             />
             {discountPercentage > 0 && (
-              <Badge 
-                variant="destructive" 
+              <Badge
+                variant="destructive"
                 className="absolute top-4 left-4 text-lg px-3 py-1"
               >
                 -{discountPercentage.toFixed(0)}%
               </Badge>
             )}
           </div>
-          
+
           {images.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
               {images.slice(1, 5).map((image, index) => (
-                <div key={index} className="aspect-square relative overflow-hidden rounded-lg border">
+                <div
+                  key={index}
+                  className="aspect-square relative overflow-hidden rounded-lg border"
+                >
                   <Image
                     src={image}
                     alt={`${title} ${index + 2}`}
@@ -153,13 +157,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="outline">{brand}</Badge>
               <Badge variant="secondary">{category}</Badge>
-              <Badge variant={getStockBadgeVariant()}>
-                {getStockText()}
-              </Badge>
+              <Badge variant={getStockBadgeVariant()}>{getStockText()}</Badge>
             </div>
-            
+
             <h1 className="text-3xl font-bold mb-2">{title}</h1>
-            
+
             <div className="flex items-center gap-2 mb-4">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -167,8 +169,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     key={i}
                     className={`w-5 h-5 ${
                       i < Math.floor(averageRating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-gray-300"
                     }`}
                   />
                 ))}
@@ -178,7 +180,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </span>
             </div>
 
-            <p className="text-muted-foreground leading-relaxed">{description}</p>
+            <p className="text-muted-foreground leading-relaxed">
+              {description}
+            </p>
           </div>
 
           {/* Precio */}
@@ -195,7 +199,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
             {discountPercentage > 0 && (
               <p className="text-sm text-green-600 font-medium">
-                Ahorras {formatPrice((price / (1 - discountPercentage / 100)) - price)}
+                Ahorras{" "}
+                {formatPrice(price / (1 - discountPercentage / 100) - price)}
               </p>
             )}
           </div>
@@ -216,13 +221,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {/* Botones de acción */}
           <div className="flex gap-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="flex-1"
-              disabled={stockStatus === 'out_of_stock'}
+              disabled={stockStatus === "out_of_stock"}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              {stockStatus === 'out_of_stock' ? 'Sin stock' : 'Añadir al carrito'}
+              {stockStatus === "out_of_stock"
+                ? "Sin stock"
+                : "Añadir al carrito"}
             </Button>
             <Button variant="outline" size="lg">
               Comprar ahora
@@ -272,7 +279,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 <span className="font-medium">Dimensiones:</span>
                 <div className="flex items-center gap-1">
                   <Ruler className="w-4 h-4 text-muted-foreground" />
-                  <span>{dimensions.width} × {dimensions.height} × {dimensions.depth} cm</span>
+                  <span>
+                    {dimensions.width} × {dimensions.height} ×{" "}
+                    {dimensions.depth} cm
+                  </span>
                 </div>
               </div>
               <div>
@@ -305,24 +315,30 @@ export function ProductDetail({ product }: ProductDetailProps) {
                               key={i}
                               className={`w-4 h-4 ${
                                 i < review.rating
-                                  ? 'fill-yellow-400 text-yellow-400'
-                                  : 'text-gray-300'
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-gray-300"
                               }`}
                             />
                           ))}
                         </div>
-                        <span className="font-medium">{review.reviewerName}</span>
+                        <span className="font-medium">
+                          {review.reviewerName}
+                        </span>
                       </div>
                       <span className="text-sm text-muted-foreground">
                         {formatDate(review.date)}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{review.comment}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {review.comment}
+                    </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground">No hay reseñas disponibles.</p>
+              <p className="text-muted-foreground">
+                No hay reseñas disponibles.
+              </p>
             )}
           </CardContent>
         </Card>
@@ -330,8 +346,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Gráfica de precio histórico */}
       <div className="mt-8">
-        <PriceChart 
-          currentPrice={price} 
+        <PriceChart
+          currentPrice={price}
           productName={title}
           className="w-full"
         />

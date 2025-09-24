@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import {
+import { useCallback, useEffect, useRef, useState } from "react";
+import type {
+  ApiError,
   Product,
   ProductsResponse,
   SearchFilters,
-  ApiError,
 } from "@/types/product";
 
 interface UseProductsOptions extends SearchFilters {
@@ -33,7 +33,7 @@ function createCacheKey(options: UseProductsOptions): string {
 }
 
 export function useProducts(
-  options: UseProductsOptions = {}
+  options: UseProductsOptions = {},
 ): UseProductsReturn {
   const {
     q,

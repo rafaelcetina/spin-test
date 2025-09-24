@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseDebouncedSearchOptions {
   delay?: number;
@@ -13,7 +13,7 @@ interface UseDebouncedSearchReturn {
 
 export function useDebouncedSearch(
   value: string,
-  options: UseDebouncedSearchOptions = {}
+  options: UseDebouncedSearchOptions = {},
 ): UseDebouncedSearchReturn {
   const { delay = 300, minLength = 0 } = options;
   const [debouncedValue, setDebouncedValue] = useState(value);

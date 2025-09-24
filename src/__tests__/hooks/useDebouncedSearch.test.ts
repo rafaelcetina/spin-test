@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 
 describe("useDebouncedSearch", () => {
@@ -14,7 +14,7 @@ describe("useDebouncedSearch", () => {
 
   it("returns initial value immediately", () => {
     const { result } = renderHook(() =>
-      useDebouncedSearch("initial", { delay: 300 })
+      useDebouncedSearch("initial", { delay: 300 }),
     );
 
     expect(result.current.debouncedValue).toBe("initial");
@@ -26,7 +26,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 300 },
-      }
+      },
     );
 
     // Change value
@@ -53,7 +53,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, delay),
       {
         initialProps: { value: "initial", delay: 300 },
-      }
+      },
     );
 
     // Change value multiple times rapidly
@@ -78,7 +78,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, delay),
       {
         initialProps: { value: "initial", delay: 300 },
-      }
+      },
     );
 
     act(() => {
@@ -107,7 +107,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 500 },
-      }
+      },
     );
 
     act(() => {
@@ -136,7 +136,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, delay),
       {
         initialProps: { value: "initial", delay: 300 },
-      }
+      },
     );
 
     act(() => {
@@ -156,7 +156,7 @@ describe("useDebouncedSearch", () => {
       ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 0 },
-      }
+      },
     );
 
     act(() => {
@@ -169,11 +169,11 @@ describe("useDebouncedSearch", () => {
   });
 
   it("cleans up timer on unmount", () => {
-    const { result, rerender, unmount } = renderHook(
+    const { rerender, unmount } = renderHook(
       ({ value, delay }) => useDebouncedSearch(value, { delay }),
       {
         initialProps: { value: "initial", delay: 300 },
-      }
+      },
     );
 
     act(() => {

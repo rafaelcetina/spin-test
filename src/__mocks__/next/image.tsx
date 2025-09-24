@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 const Image = (props: any) => {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img {...props} />
-}
+  return <img {...props} alt={props.alt || ""} />;
+};
 
-export default Image
+export default Image;

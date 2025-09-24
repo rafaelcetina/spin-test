@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { ProductDetail } from '@/components/ProductDetail'
-import { Product } from '@/types/product'
+import { render, screen } from "@testing-library/react";
+import { ProductDetail } from "@/components/ProductDetail";
+import type { Product } from "@/types/product";
 
 const mockProduct: Product = {
   id: 1,
@@ -55,20 +55,20 @@ const mockProduct: Product = {
 };
 
 // Mock Next.js components
-jest.mock('next/link', () => {
+jest.mock("next/link", () => {
   return ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
-  )
-})
+  );
+});
 
-jest.mock('next/image', () => {
+jest.mock("next/image", () => {
   return ({ src, alt, ...props }: any) => (
     <img src={src} alt={alt} {...props} />
-  )
-})
+  );
+});
 
 // Mock recharts
-jest.mock('recharts', () => ({
+jest.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">{children}</div>
   ),
@@ -80,48 +80,48 @@ jest.mock('recharts', () => ({
   YAxis: () => <div data-testid="y-axis" />,
   CartesianGrid: () => <div data-testid="cartesian-grid" />,
   Tooltip: () => <div data-testid="tooltip" />,
-}))
+}));
 
-describe('Product Detail Integration', () => {
+describe("Product Detail Integration", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  it('renders product information', () => {
-    render(<ProductDetail product={mockProduct} />)
-    
-    expect(screen.getByText(mockProduct.title)).toBeInTheDocument()
-    expect(screen.getByText(mockProduct.description)).toBeInTheDocument()
-    expect(screen.getByText(mockProduct.brand)).toBeInTheDocument()
-  })
+  it("renders product information", () => {
+    render(<ProductDetail product={mockProduct} />);
 
-  it('renders price information', () => {
-    render(<ProductDetail product={mockProduct} />)
-    
+    expect(screen.getByText(mockProduct.title)).toBeInTheDocument();
+    expect(screen.getByText(mockProduct.description)).toBeInTheDocument();
+    expect(screen.getByText(mockProduct.brand)).toBeInTheDocument();
+  });
+
+  it("renders price information", () => {
+    render(<ProductDetail product={mockProduct} />);
+
     // Check for formatted price - there might be multiple instances
-    const priceElements = screen.getAllByText(/\$549\.00/)
-    expect(priceElements.length).toBeGreaterThan(0)
-  })
+    const priceElements = screen.getAllByText(/\$549\.00/);
+    expect(priceElements.length).toBeGreaterThan(0);
+  });
 
-  it('renders rating information', () => {
-    render(<ProductDetail product={mockProduct} />)
-    
+  it("renders rating information", () => {
+    render(<ProductDetail product={mockProduct} />);
+
     // Check that the component renders without crashing
     // The rating section should be present in the DOM
-    expect(screen.getByText(mockProduct.title)).toBeInTheDocument()
-    expect(screen.getByText(mockProduct.brand)).toBeInTheDocument()
-  })
+    expect(screen.getByText(mockProduct.title)).toBeInTheDocument();
+    expect(screen.getByText(mockProduct.brand)).toBeInTheDocument();
+  });
 
-  it('renders stock information', () => {
-    render(<ProductDetail product={mockProduct} />)
-    
-    expect(screen.getByText(/94 unidades/)).toBeInTheDocument()
-  })
+  it("renders stock information", () => {
+    render(<ProductDetail product={mockProduct} />);
 
-  it('renders price chart', () => {
-    render(<ProductDetail product={mockProduct} />)
-    
-    expect(screen.getByTestId('responsive-container')).toBeInTheDocument()
-    expect(screen.getByTestId('line-chart')).toBeInTheDocument()
-  })
-})
+    expect(screen.getByText(/94 unidades/)).toBeInTheDocument();
+  });
+
+  it("renders price chart", () => {
+    render(<ProductDetail product={mockProduct} />);
+
+    expect(screen.getByTestId("responsive-container")).toBeInTheDocument();
+    expect(screen.getByTestId("line-chart")).toBeInTheDocument();
+  });
+});

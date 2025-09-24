@@ -1,7 +1,7 @@
 export const useDebouncedSearch = jest.fn(
-  (value: string, options: { delay?: number } = {}) => ({
+  (value: string, _options: { delay?: number } = {}) => ({
     debouncedValue: value,
     isDebouncing: false,
     cancel: jest.fn(),
-  })
+  }),
 );

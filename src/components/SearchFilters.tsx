@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useSearchFilters } from '@/contexts/SearchFiltersContext';
-import { useDebouncedSearch } from '@/hooks/useDebouncedSearch';
-import { Search, X, Filter, RotateCcw } from 'lucide-react';
-import { Category } from '@/types/product';
+import { Filter, RotateCcw, Search, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useSearchFilters } from "@/contexts/SearchFiltersContext";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+import type { Category } from "@/types/product";
 
 interface SearchFiltersProps {
   categories: Category[];
@@ -17,9 +23,18 @@ interface SearchFiltersProps {
 }
 
 export function SearchFilters({ categories, className }: SearchFiltersProps) {
-  const { state, updateSearch, updateCategory, updateSort, updateOrder, resetFilters } = useSearchFilters();
-  const [searchInput, setSearchInput] = useState(state.q || '');
-  const { debouncedValue, isDebouncing } = useDebouncedSearch(searchInput, { delay: 400 });
+  const {
+    state,
+    updateSearch,
+    updateCategory,
+    updateSort,
+    updateOrder,
+    resetFilters,
+  } = useSearchFilters();
+  const [searchInput, setSearchInput] = useState(state.q || "");
+  const { debouncedValue, isDebouncing } = useDebouncedSearch(searchInput, {
+    delay: 400,
+  });
 
   // Estados locales para los Select para evitar bucles infinitos
   const [localCategory, setLocalCategory] = useState(state.category);
@@ -33,7 +48,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
 
   // Sincronizar input con el estado del contexto
   useEffect(() => {
-    setSearchInput(state.q || '');
+    setSearchInput(state.q || "");
   }, [state.q]);
 
   // Sincronizar estados locales con el contexto
@@ -54,13 +69,13 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
   };
 
   const clearSearch = () => {
-    setSearchInput('');
-    updateSearch('');
+    setSearchInput("");
+    updateSearch("");
   };
 
   const handleCategoryChange = (value: string) => {
     setLocalCategory(value);
-    updateCategory(value === 'all' ? '' : value);
+    updateCategory(value === "all" ? "" : value);
   };
 
   const handleSortChange = (value: string) => {
@@ -73,7 +88,11 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
     updateOrder(value as any);
   };
 
-  const hasActiveFilters = state.q || (state.category && state.category !== 'all') || (state.sort && state.sort !== 'none') || (state.order && state.order !== 'none');
+  const hasActiveFilters =
+    state.q ||
+    (state.category && state.category !== "all") ||
+    (state.sort && state.sort !== "none") ||
+    (state.order && state.order !== "none");
 
   return (
     <Card className={className}>
@@ -83,7 +102,12 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
           Filtros de búsqueda
           {hasActiveFilters && (
             <Badge variant="secondary" className="ml-auto">
-              {[state.q, state.category, state.sort, state.order].filter(Boolean).length} activos
+              {
+                [state.q, state.category, state.sort, state.order].filter(
+                  Boolean,
+                ).length
+              }{" "}
+              activos
             </Badge>
           )}
         </CardTitle>
@@ -114,7 +138,10 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               </Button>
             )}
             {isDebouncing && (
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2" aria-label="Buscando...">
+              <div
+                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                aria-label="Buscando..."
+              >
                 <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             )}
@@ -126,10 +153,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
           {/* Categoría */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Categoría</label>
-            <Select
-              value={localCategory}
-              onValueChange={handleCategoryChange}
-            >
+            <Select value={localCategory} onValueChange={handleCategoryChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Todas las categorías" />
               </SelectTrigger>
@@ -147,10 +171,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
           {/* Ordenar por */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Ordenar por</label>
-            <Select
-              value={localSort}
-              onValueChange={handleSortChange}
-            >
+            <Select value={localSort} onValueChange={handleSortChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Ordenar por..." />
               </SelectTrigger>
@@ -169,7 +190,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
             <Select
               value={localOrder}
               onValueChange={handleOrderChange}
-              disabled={!localSort || localSort === 'none'}
+              disabled={!localSort || localSort === "none"}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar orden" />
@@ -208,35 +229,35 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => updateSearch('')}
+                    onClick={() => updateSearch("")}
                     className="h-4 w-4 p-0 hover:bg-transparent"
                   >
                     <X className="w-3 h-3" />
                   </Button>
                 </Badge>
               )}
-              {state.category && state.category !== 'all' && (
+              {state.category && state.category !== "all" && (
                 <Badge variant="secondary" className="flex items-center gap-1">
                   Categoría: {state.category}
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => updateCategory('')}
+                    onClick={() => updateCategory("")}
                     className="h-4 w-4 p-0 hover:bg-transparent"
                   >
                     <X className="w-3 h-3" />
                   </Button>
                 </Badge>
               )}
-              {state.sort && state.sort !== 'none' && (
+              {state.sort && state.sort !== "none" && (
                 <Badge variant="secondary" className="flex items-center gap-1">
                   Orden: {state.sort} ({state.order})
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      updateSort('none');
-                      updateOrder('none');
+                      updateSort("none");
+                      updateOrder("none");
                     }}
                     className="h-4 w-4 p-0 hover:bg-transparent"
                   >

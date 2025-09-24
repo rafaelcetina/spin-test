@@ -1,11 +1,14 @@
-import { NextRequest } from "next/server";
+// Removed unused import
 
 // Mock fetch globally
 global.fetch = jest.fn();
 
 // Mock Request constructor
 global.Request = class Request {
-  constructor(public url: string, public init?: RequestInit) {}
+  constructor(
+    public url: string,
+    public init?: RequestInit,
+  ) {}
 } as any;
 
 // Mock the API route

@@ -1,9 +1,20 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useSearchFilters } from '@/contexts/SearchFiltersContext';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useSearchFilters } from "@/contexts/SearchFiltersContext";
 
 interface PaginationProps {
   currentPage: number;
@@ -50,7 +61,7 @@ export function Pagination({
     }
 
     if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...');
+      rangeWithDots.push(1, "...");
     } else {
       rangeWithDots.push(1);
     }
@@ -58,7 +69,7 @@ export function Pagination({
     rangeWithDots.push(...range);
 
     if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages);
+      rangeWithDots.push("...", totalPages);
     } else if (totalPages > 1) {
       rangeWithDots.push(totalPages);
     }
@@ -74,7 +85,9 @@ export function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}
+    >
       {/* Información de resultados */}
       <div className="text-sm text-muted-foreground">
         Mostrando {startItem}-{endItem} de {totalItems} productos
@@ -108,16 +121,18 @@ export function Pagination({
         <div className="flex items-center gap-1">
           {getVisiblePages().map((page, index) => (
             <div key={index}>
-              {page === '...' ? (
-                <span className="px-3 py-2 text-sm text-muted-foreground">...</span>
+              {page === "..." ? (
+                <span className="px-3 py-2 text-sm text-muted-foreground">
+                  ...
+                </span>
               ) : (
                 <Button
-                  variant={page === currentPage ? 'default' : 'outline'}
+                  variant={page === currentPage ? "default" : "outline"}
                   size="sm"
                   onClick={() => handlePageChange(page as number)}
                   className="w-10 h-10 p-0"
                   aria-label={`Ir a la página ${page}`}
-                  aria-current={page === currentPage ? 'page' : undefined}
+                  aria-current={page === currentPage ? "page" : undefined}
                 >
                   {page}
                 </Button>

@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { ProductsPage } from '@/components/ProductsPage'
-import { SearchFiltersProvider } from '@/contexts/SearchFiltersContext'
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ProductsPage } from "@/components/ProductsPage";
+import { SearchFiltersProvider } from "@/contexts/SearchFiltersContext";
 
 // Mock the useProducts hook
-jest.mock('@/hooks/useProducts', () => ({
+jest.mock("@/hooks/useProducts", () => ({
   useProducts: jest.fn(() => ({
     products: [],
     loading: false,
@@ -14,54 +14,56 @@ jest.mock('@/hooks/useProducts', () => ({
     hasPreviousPage: false,
     refetch: jest.fn(),
   })),
-}))
+}));
 
 // Mock Next.js router
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter: () => ({
     push: jest.fn(),
     replace: jest.fn(),
   }),
   useSearchParams: () => new URLSearchParams(),
-  usePathname: () => '/',
-}))
+  usePathname: () => "/",
+}));
 
-describe('Search Flow Integration', () => {
-  const user = userEvent.setup()
+describe("Search Flow Integration", () => {
+  const _user = userEvent.setup();
 
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  it('renders ProductsPage component', () => {
+  it("renders ProductsPage component", () => {
     render(
       <SearchFiltersProvider>
         <ProductsPage />
-      </SearchFiltersProvider>
-    )
-    
-    expect(screen.getByText('Filtros de búsqueda')).toBeInTheDocument()
-  })
+      </SearchFiltersProvider>,
+    );
 
-  it('renders search input', () => {
+    expect(screen.getByText("Filtros de búsqueda")).toBeInTheDocument();
+  });
+
+  it("renders search input", () => {
     render(
       <SearchFiltersProvider>
         <ProductsPage />
-      </SearchFiltersProvider>
-    )
-    
-    const searchInput = screen.getByPlaceholderText('Buscar por nombre, marca o descripción...')
-    expect(searchInput).toBeInTheDocument()
-  })
+      </SearchFiltersProvider>,
+    );
 
-  it('renders category filter', () => {
+    const searchInput = screen.getByPlaceholderText(
+      "Buscar por nombre, marca o descripción...",
+    );
+    expect(searchInput).toBeInTheDocument();
+  });
+
+  it("renders category filter", () => {
     render(
       <SearchFiltersProvider>
         <ProductsPage />
-      </SearchFiltersProvider>
-    )
-    
-    const comboboxes = screen.getAllByRole('combobox')
-    expect(comboboxes.length).toBeGreaterThan(0)
-  })
-})
+      </SearchFiltersProvider>,
+    );
+
+    const comboboxes = screen.getAllByRole("combobox");
+    expect(comboboxes.length).toBeGreaterThan(0);
+  });
+});

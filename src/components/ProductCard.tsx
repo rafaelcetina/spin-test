@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Product } from '@/types/product';
-import { Star, ShoppingCart, Eye } from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { Eye, ShoppingCart, Star } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import type { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
@@ -33,40 +38,40 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'dd MMM yyyy', { locale: es });
+      return format(new Date(dateString), "dd MMM yyyy", { locale: es });
     } catch {
-      return 'Fecha no disponible';
+      return "Fecha no disponible";
     }
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
+    return new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
     }).format(price);
   };
 
   const getStockBadgeVariant = () => {
     switch (stockStatus) {
-      case 'in_stock':
-        return 'default';
-      case 'low_stock':
-        return 'secondary';
-      case 'out_of_stock':
-        return 'destructive';
+      case "in_stock":
+        return "default";
+      case "low_stock":
+        return "secondary";
+      case "out_of_stock":
+        return "destructive";
       default:
-        return 'outline';
+        return "outline";
     }
   };
 
   const getStockText = () => {
     switch (stockStatus) {
-      case 'in_stock':
-        return 'En stock';
-      case 'low_stock':
-        return 'Poco stock';
-      case 'out_of_stock':
-        return 'Sin stock';
+      case "in_stock":
+        return "En stock";
+      case "low_stock":
+        return "Poco stock";
+      case "out_of_stock":
+        return "Sin stock";
       default:
         return `${stock} unidades`;
     }
@@ -84,14 +89,11 @@ export function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
           {discountPercentage > 0 && (
-            <Badge 
-              variant="destructive" 
-              className="absolute top-2 left-2"
-            >
+            <Badge variant="destructive" className="absolute top-2 left-2">
               -{discountPercentage.toFixed(0)}%
             </Badge>
           )}
-          <Badge 
+          <Badge
             variant={getStockBadgeVariant()}
             className="absolute top-2 right-2"
           >
@@ -126,8 +128,8 @@ export function ProductCard({ product }: ProductCardProps) {
                   key={i}
                   className={`w-4 h-4 ${
                     i < Math.floor(rating)
-                      ? 'fill-yellow-400 text-yellow-400'
-                      : 'text-gray-300'
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-300"
                   }`}
                 />
               ))}
@@ -160,10 +162,10 @@ export function ProductCard({ product }: ProductCardProps) {
               Ver detalles
             </Link>
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="icon"
-            disabled={stockStatus === 'out_of_stock'}
+            disabled={stockStatus === "out_of_stock"}
             className="shrink-0"
           >
             <ShoppingCart className="w-4 h-4" />

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ProductCard } from '@/components/ProductCard';
-import { SearchFilters } from '@/components/SearchFilters';
-import { Pagination } from '@/components/Pagination';
-import { ProductGridSkeleton } from '@/components/ProductSkeleton';
-import { useSearchFilters } from '@/contexts/SearchFiltersContext';
-import { useProducts } from '@/hooks/useProducts';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw } from 'lucide-react';
-import { Category } from '@/types/product';
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Pagination } from "@/components/Pagination";
+import { ProductCard } from "@/components/ProductCard";
+import { ProductGridSkeleton } from "@/components/ProductSkeleton";
+import { SearchFilters } from "@/components/SearchFilters";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { useSearchFilters } from "@/contexts/SearchFiltersContext";
+import { useProducts } from "@/hooks/useProducts";
+import type { Category } from "@/types/product";
 
 export function ProductsPage() {
   const { state } = useSearchFilters();
@@ -29,9 +29,9 @@ export function ProductsPage() {
     totalPages,
   } = useProducts({
     q: state.q,
-    category: state.category === 'all' ? undefined : state.category,
-    sort: state.sort === 'none' ? undefined : state.sort,
-    order: state.order === 'none' ? undefined : state.order,
+    category: state.category === "all" ? undefined : state.category,
+    sort: state.sort === "none" ? undefined : state.sort,
+    order: state.order === "none" ? undefined : state.order,
     page: state.page,
     limit: state.limit,
   });
@@ -41,18 +41,18 @@ export function ProductsPage() {
     const fetchCategories = async () => {
       try {
         setCategoriesLoading(true);
-        const response = await fetch('/api/dummy/products?action=categories', {
-          method: 'POST',
+        const response = await fetch("/api/dummy/products?action=categories", {
+          method: "POST",
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           setCategories(data);
         } else {
-          console.error('Error fetching categories');
+          console.error("Error fetching categories");
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       } finally {
         setCategoriesLoading(false);
       }
@@ -81,10 +81,7 @@ export function ProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       {/* Filtros de búsqueda */}
-      <SearchFilters 
-        categories={categories} 
-        className="sticky top-4 z-10"
-      />
+      <SearchFilters categories={categories} className="sticky top-4 z-10" />
 
       {/* Resultados */}
       <div className="space-y-6">
@@ -92,13 +89,13 @@ export function ProductsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold">
-              {state.q ? `Resultados para "${state.q}"` : 'Productos'}
+              {state.q ? `Resultados para "${state.q}"` : "Productos"}
             </h1>
             <p className="text-muted-foreground">
-              {loading ? 'Cargando...' : `${total} productos encontrados`}
+              {loading ? "Cargando..." : `${total} productos encontrados`}
             </p>
           </div>
-          
+
           {!loading && products.length > 0 && (
             <div className="text-sm text-muted-foreground">
               Página {currentPage} de {totalPages}
@@ -118,9 +115,12 @@ export function ProductsPage() {
         ) : (
           <div className="text-center py-12">
             <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No se encontraron productos</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              No se encontraron productos
+            </h3>
             <p className="text-muted-foreground mb-4">
-              Intenta ajustar tus filtros de búsqueda o explorar otras categorías.
+              Intenta ajustar tus filtros de búsqueda o explorar otras
+              categorías.
             </p>
             <Button variant="outline" onClick={refetch}>
               <RefreshCw className="w-4 h-4 mr-2" />

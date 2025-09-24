@@ -13,7 +13,7 @@ jest.mock("@/hooks/useDebouncedSearch", () => ({
 global.fetch = jest.fn();
 
 // Mock the useProducts hook implementation
-const mockUseProducts = jest.fn();
+const _mockUseProducts = jest.fn();
 
 // Import the hook after mocking
 import { useProducts } from "@/hooks/useProducts";
