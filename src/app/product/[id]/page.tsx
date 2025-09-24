@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/ProductDetail";
+import { formatPrice } from "@/lib/priceUtils";
 import type { Product } from "@/types/product";
 
 interface ProductPageProps {
@@ -24,10 +25,7 @@ async function getProduct(id: string): Promise<Product | null> {
     // Aplicar transformaciones como en el proxy
     const transformedProduct: Product = {
       ...product,
-      localPrice: new Intl.NumberFormat("es-ES", {
-        style: "currency",
-        currency: "MXN",
-      }).format(product.price),
+      localPrice: formatPrice(product.price),
       stockStatus:
         product.stock === 0
           ? "out_of_stock"

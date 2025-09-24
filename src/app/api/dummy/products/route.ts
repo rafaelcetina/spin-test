@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { formatPrice } from "@/lib/priceUtils";
 import type { Product, ProductsResponse } from "@/types/product";
 
 const DUMMY_JSON_BASE_URL = "https://dummyjson.com/products";
@@ -13,13 +14,6 @@ function getStockStatus(
   if (stock === 0) return "out_of_stock";
   if (stock <= 5) return "low_stock";
   return "in_stock";
-}
-
-function formatPrice(price: number): string {
-  return new Intl.NumberFormat("es-ES", {
-    style: "currency",
-    currency: "MXN",
-  }).format(price);
 }
 
 function transformProduct(product: Product): Product {

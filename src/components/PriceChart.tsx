@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
 
 interface PriceData {
   month: string;
@@ -104,13 +105,6 @@ export function PriceChart({
     return "text-gray-600";
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("es-MX", {
-      style: "currency",
-      currency: "MXN",
-    }).format(price);
-  };
-
   const CustomTooltip = ({
     active,
     payload,
@@ -169,7 +163,7 @@ export function PriceChart({
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => `${formatPrice(value)}`}
                 domain={["dataMin - 50", "dataMax + 50"]}
               />
               <Tooltip content={<CustomTooltip />} />

@@ -13,6 +13,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -41,13 +42,6 @@ export function ProductCard({ product }: ProductCardProps) {
     } catch {
       return "Fecha no disponible";
     }
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("es-MX", {
-      style: "currency",
-      currency: "MXN",
-    }).format(price);
   };
 
   const getStockBadgeVariant = () => {

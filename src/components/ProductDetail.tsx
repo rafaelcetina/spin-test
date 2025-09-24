@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types/product";
 
 interface ProductDetailProps {
@@ -56,13 +57,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
     } catch {
       return "Fecha no disponible";
     }
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("es-MX", {
-      style: "currency",
-      currency: "MXN",
-    }).format(price);
   };
 
   const getStockBadgeVariant = () => {
