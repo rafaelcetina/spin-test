@@ -38,7 +38,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), "dd MMM yyyy", { locale: es });
+      return format(new Date(dateString), "dd MMM yyyy HH:mm", { locale: es });
     } catch {
       return "Fecha no disponible";
     }
