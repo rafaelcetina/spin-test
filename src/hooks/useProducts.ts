@@ -167,7 +167,7 @@ export function useProducts(
         abortControllerRef.current.abort();
       }
     };
-  }, [fetchProducts]);
+  }, [q, category, sort, order, page, limit, retries, delay]); // Dependencias directas en lugar de fetchProducts
 
   // Calcular paginación
   const totalPages = Math.ceil(total / limit);

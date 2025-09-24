@@ -183,7 +183,7 @@ function SearchFiltersProviderInner({
         router.replace(newUrl, { scroll: false });
       }
     }
-  }, [state, router, searchParams]);
+  }, [state, router]); // Removido searchParams de las dependencias
 
   const updateSearch = useCallback((search: string) => {
     dispatch({ type: "SET_SEARCH", payload: search });
