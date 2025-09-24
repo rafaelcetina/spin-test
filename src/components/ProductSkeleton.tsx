@@ -36,7 +36,7 @@ export function ProductSkeleton() {
           <div className="flex items-center gap-1">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="w-4 h-4" />
+                <Skeleton key={`star-skeleton-${i}`} className="w-4 h-4" />
               ))}
             </div>
             <Skeleton className="h-4 w-20 ml-1" />
@@ -69,7 +69,7 @@ export function ProductGridSkeleton({ count = 12 }: { count?: number }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {[...Array(count)].map((_, i) => (
-        <ProductSkeleton key={i} />
+        <ProductSkeleton key={`skeleton-${i}`} />
       ))}
     </div>
   );

@@ -120,7 +120,7 @@ export function Pagination({
         {/* Números de página */}
         <div className="flex items-center gap-1">
           {getVisiblePages().map((page, index) => (
-            <div key={index}>
+            <div key={`page-${page}-${index}`}>
               {page === "..." ? (
                 <span className="px-3 py-2 text-sm text-muted-foreground">
                   ...

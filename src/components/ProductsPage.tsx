@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertCircle, RefreshCw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pagination } from "@/components/Pagination";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGridSkeleton } from "@/components/ProductSkeleton";
@@ -17,6 +17,19 @@ export function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [_categoriesLoading, setCategoriesLoading] = useState(true);
 
+  // Memoizar las opciones para evitar re-renders innecesarios
+  const productsOptions = useMemo(
+    () => ({
+      q: state.q,
+      category: state.category === "all" ? undefined : state.category,
+      sort: state.sort === "none" ? undefined : state.sort,
+      order: state.order === "none" ? undefined : state.order,
+      page: state.page,
+      limit: state.limit,
+    }),
+    [state.q, state.category, state.sort, state.order, state.page, state.limit],
+  );
+
   const {
     products,
     total,
@@ -27,14 +40,7 @@ export function ProductsPage() {
     hasPreviousPage,
     currentPage,
     totalPages,
-  } = useProducts({
-    q: state.q,
-    category: state.category === "all" ? undefined : state.category,
-    sort: state.sort === "none" ? undefined : state.sort,
-    order: state.order === "none" ? undefined : state.order,
-    page: state.page,
-    limit: state.limit,
-  });
+  } = useProducts(productsOptions);
 
   // Cargar categorías
   useEffect(() => {
