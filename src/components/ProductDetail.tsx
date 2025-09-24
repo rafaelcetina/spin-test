@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { PriceChart } from '@/components/PriceChart';
 
 interface ProductDetailProps {
   product: Product;
@@ -57,6 +58,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
     } catch {
       return 'Fecha no disponible';
     }
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+    }).format(price);
   };
 
   const getStockBadgeVariant = () => {
@@ -101,7 +109,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         {/* Galería de imágenes */}
         <div className="space-y-4">
           <div className="aspect-square relative overflow-hidden rounded-lg border">
@@ -177,26 +185,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className="space-y-2">
             <div className="flex items-center gap-4">
               <span className="text-4xl font-bold text-primary">
-                {localPrice || new Intl.NumberFormat('es-ES', {
-                  style: 'currency',
-                  currency: 'EUR',
-                }).format(price)}
+                {formatPrice(price)}
               </span>
               {discountPercentage > 0 && (
                 <span className="text-xl text-muted-foreground line-through">
-                  {new Intl.NumberFormat('es-ES', {
-                    style: 'currency',
-                    currency: 'EUR',
-                  }).format(price / (1 - discountPercentage / 100))}
+                  {formatPrice(price / (1 - discountPercentage / 100))}
                 </span>
               )}
             </div>
             {discountPercentage > 0 && (
               <p className="text-sm text-green-600 font-medium">
-                Ahorras {new Intl.NumberFormat('es-ES', {
-                  style: 'currency',
-                  currency: 'EUR',
-                }).format((price / (1 - discountPercentage / 100)) - price)}
+                Ahorras {formatPrice((price / (1 - discountPercentage / 100)) - price)}
               </p>
             )}
           </div>
@@ -327,6 +326,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
           </CardContent>
         </Card>
+      </div>
+
+      {/* Gráfica de precio histórico */}
+      <div className="mt-8">
+        <PriceChart 
+          currentPrice={price} 
+          productName={title}
+          className="w-full"
+        />
       </div>
 
       {fetchedAt && (

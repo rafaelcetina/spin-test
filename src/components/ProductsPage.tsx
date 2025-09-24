@@ -89,9 +89,9 @@ export function ProductsPage() {
       {/* Resultados */}
       <div className="space-y-6">
         {/* Información de resultados */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-xl sm:text-2xl font-bold">
               {state.q ? `Resultados para "${state.q}"` : 'Productos'}
             </h1>
             <p className="text-muted-foreground">

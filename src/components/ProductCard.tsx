@@ -39,6 +39,13 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+    }).format(price);
+  };
+
   const getStockBadgeVariant = () => {
     switch (stockStatus) {
       case 'in_stock':
@@ -74,7 +81,7 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
           {discountPercentage > 0 && (
             <Badge 
@@ -133,17 +140,11 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <p className="text-2xl font-bold text-primary">
-                {localPrice || new Intl.NumberFormat('es-ES', {
-                  style: 'currency',
-                  currency: 'EUR',
-                }).format(price)}
+                {formatPrice(price)}
               </p>
               {discountPercentage > 0 && (
                 <p className="text-sm text-muted-foreground line-through">
-                  {new Intl.NumberFormat('es-ES', {
-                    style: 'currency',
-                    currency: 'EUR',
-                  }).format(price / (1 - discountPercentage / 100))}
+                  {formatPrice(price / (1 - discountPercentage / 100))}
                 </p>
               )}
             </div>

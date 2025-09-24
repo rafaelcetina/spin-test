@@ -64,3 +64,45 @@ El proyecto ya incluía las siguientes dependencias esenciales:
 - `lucide-react` - Iconos
 - `class-variance-authority` - Manejo de variantes de clases
 - `clsx` y `tailwind-merge` - Utilidades para clases CSS
+
+## recharts
+
+**Versión:** 2.12.7
+
+**Motivo de instalación:**
+Se instaló `recharts` para implementar gráficas interactivas de precio histórico en la página de detalle de productos por las siguientes razones:
+
+1. **Gráficas interactivas**: Proporciona componentes de gráficas modernos y responsivos
+2. **Accesibilidad**: Soporte nativo para ARIA labels y lectores de pantalla
+3. **Responsive**: Se adapta automáticamente a diferentes tamaños de pantalla
+4. **Ligero**: Biblioteca optimizada que no añade mucho peso al bundle
+5. **TypeScript**: Tipado completo para mejor experiencia de desarrollo
+6. **Customizable**: Fácil personalización de colores, estilos y comportamiento
+
+**Uso en el proyecto:**
+
+```typescript
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+// Gráfica de precio histórico con datos simulados
+<ResponsiveContainer width="100%" height="100%">
+  <LineChart data={priceData} role="img" aria-label="Gráfica de precios">
+    <Line type="monotone" dataKey="price" stroke="#3b82f6" />
+  </LineChart>
+</ResponsiveContainer>;
+```
+
+**Alternativas consideradas:**
+
+- `Chart.js`: Más pesado y requiere configuración adicional
+- `D3.js`: Muy potente pero complejo para casos simples
+- `Victory`: Buena opción pero menos popular
+- `SVG manual`: Más control pero requiere más código

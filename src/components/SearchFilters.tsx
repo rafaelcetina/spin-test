@@ -99,6 +99,8 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-10 pr-10"
+              aria-label="Buscar productos"
+              aria-describedby="search-help"
             />
             {searchInput && (
               <Button
@@ -106,12 +108,13 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
                 size="sm"
                 onClick={clearSearch}
                 className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                aria-label="Limpiar búsqueda"
               >
                 <X className="w-4 h-4" />
               </Button>
             )}
             {isDebouncing && (
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2" aria-label="Buscando...">
                 <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             )}
@@ -119,7 +122,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
         </div>
 
         {/* Filtros en grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Categoría */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Categoría</label>
@@ -133,7 +136,6 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               <SelectContent>
                 <SelectItem value="all">Todas las categorías</SelectItem>
                 {categories.map((category) => (
-                  console.log(category),
                   <SelectItem key={category.slug} value={category.slug}>
                     {category.name}
                   </SelectItem>

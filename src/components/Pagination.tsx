@@ -89,6 +89,7 @@ export function Pagination({
           onClick={() => handlePageChange(1)}
           disabled={!hasPreviousPage}
           className="hidden sm:flex"
+          aria-label="Ir a la primera página"
         >
           <ChevronsLeft className="w-4 h-4" />
         </Button>
@@ -98,6 +99,7 @@ export function Pagination({
           size="sm"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={!hasPreviousPage}
+          aria-label="Ir a la página anterior"
         >
           <ChevronLeft className="w-4 h-4" />
         </Button>
@@ -114,6 +116,8 @@ export function Pagination({
                   size="sm"
                   onClick={() => handlePageChange(page as number)}
                   className="w-10 h-10 p-0"
+                  aria-label={`Ir a la página ${page}`}
+                  aria-current={page === currentPage ? 'page' : undefined}
                 >
                   {page}
                 </Button>
@@ -127,6 +131,7 @@ export function Pagination({
           size="sm"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={!hasNextPage}
+          aria-label="Ir a la página siguiente"
         >
           <ChevronRight className="w-4 h-4" />
         </Button>
@@ -137,6 +142,7 @@ export function Pagination({
           onClick={() => handlePageChange(totalPages)}
           disabled={!hasNextPage}
           className="hidden sm:flex"
+          aria-label="Ir a la última página"
         >
           <ChevronsRight className="w-4 h-4" />
         </Button>

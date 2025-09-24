@@ -11,9 +11,12 @@ Un ecommerce moderno construido con Next.js 15, TypeScript y Shadcn/ui que consu
 - **Filtros por categoría** y ordenamiento (precio/rating asc/desc)
 - **Rutas dinámicas** para productos individuales (`/product/[id]`)
 - **Metadata dinámico** para SEO en cada producto
+- **Gráficas interactivas** de precio histórico con recharts
 - **Skeletons de carga** para mejor UX
-- **Formateo de precios** con `Intl.NumberFormat`
+- **Formateo de precios** en pesos mexicanos (MXN)
 - **Formateo de fechas** con `date-fns`
+- **Diseño responsive** con breakpoints documentados
+- **Accesibilidad completa** (ARIA, navegación por teclado)
 
 ### Arquitectura técnica
 
@@ -34,6 +37,7 @@ Un ecommerce moderno construido con Next.js 15, TypeScript y Shadcn/ui que consu
 - **Shadcn/ui** - Componentes UI modernos
 - **Tailwind CSS** - Estilos utilitarios
 - **date-fns** - Manipulación de fechas
+- **recharts** - Gráficas interactivas
 - **Lucide React** - Iconos
 
 ## 📦 Instalación
@@ -172,10 +176,174 @@ const {
 
 ## 📱 Responsive Design
 
-- **Mobile First** - Diseño optimizado para móviles
+### Breakpoints Tailwind CSS
+
+El proyecto utiliza un enfoque **mobile-first** con los siguientes breakpoints:
+
+- **`sm`** (640px+) - Tablets pequeñas
+- **`md`** (768px+) - Tablets
+- **`lg`** (1024px+) - Laptops
+- **`xl`** (1280px+) - Desktop
+- **`2xl`** (1536px+) - Pantallas grandes
+
+### Clases Responsivas Utilizadas
+
+#### Grid de Productos
+
+```css
+/* Mobile: 1 columna */
+grid-cols-1
+
+/* Tablet: 2 columnas */
+sm:grid-cols-2
+
+/* Laptop: 3 columnas */
+lg:grid-cols-3
+
+/* Desktop: 4 columnas */
+xl:grid-cols-4
+```
+
+#### Filtros de Búsqueda
+
+```css
+/* Mobile: 1 columna */
+grid-cols-1
+
+/* Tablet: 2 columnas */
+sm:grid-cols-2
+
+/* Desktop: 3 columnas */
+lg:grid-cols-3
+```
+
+#### Layout de Producto Individual
+
+```css
+/* Mobile: 1 columna */
+grid-cols-1
+
+/* Desktop: 2 columnas */
+xl:grid-cols-2
+```
+
+#### Tipografía Responsiva
+
+```css
+/* Mobile: texto pequeño */
+text-xl
+
+/* Desktop: texto grande */
+sm:text-2xl
+```
+
+#### Navegación
+
+```css
+/* Mobile: columna */
+flex-col
+
+/* Desktop: fila */
+sm:flex-row
+```
+
+### Características Responsivas
+
 - **Grid adaptativo** - 1-4 columnas según el tamaño de pantalla
-- **Filtros colapsables** - Mejor UX en móviles
-- **Paginación responsive** - Botones adaptativos
+- **Filtros adaptativos** - Layout que se ajusta al espacio disponible
+- **Paginación responsive** - Botones que se ocultan en móviles
+- **Imágenes optimizadas** - Diferentes tamaños según el dispositivo
+- **Tipografía escalable** - Tamaños que se adaptan al viewport
+
+## ♿ Accesibilidad
+
+### Características Implementadas
+
+- **ARIA Labels** - Etiquetas descriptivas para todos los controles
+- **Navegación por teclado** - Todos los elementos son navegables con Tab
+- **Contraste adecuado** - Colores que cumplen estándares WCAG
+- **Foco visible** - Indicadores claros de elementos activos
+- **Lectores de pantalla** - Contenido alternativo para gráficas
+- **Semántica HTML** - Uso correcto de elementos semánticos
+
+### Implementaciones Específicas
+
+#### Gráficas Accesibles
+
+```typescript
+// Descripción para lectores de pantalla
+aria-label={`Gráfica de historial de precios para ${productName}`}
+
+// Contenido alternativo oculto
+<div className="sr-only">
+  <p>Gráfica de historial de precios para {productName}...</p>
+</div>
+```
+
+#### Paginación Accesible
+
+```typescript
+// Página actual marcada
+aria-current={page === currentPage ? 'page' : undefined}
+
+// Etiquetas descriptivas
+aria-label={`Ir a la página ${page}`}
+```
+
+#### Formularios Accesibles
+
+```typescript
+// Inputs con etiquetas
+<Input aria-label="Buscar productos" aria-describedby="search-help" />
+```
+
+### Estándares Cumplidos
+
+- **WCAG 2.1 AA** - Nivel de conformidad recomendado
+- **Section 508** - Estándares de accesibilidad gubernamental
+- **WAI-ARIA** - Especificaciones para contenido dinámico
+
+## 📊 Gráficas Interactivas
+
+### Características de las Gráficas
+
+- **Precio histórico simulado** - Datos de 12 meses con variaciones realistas
+- **Responsive** - Se adapta a diferentes tamaños de pantalla
+- **Accesible** - Descripciones para lectores de pantalla
+- **Interactiva** - Tooltips con información detallada
+- **Tendencias visuales** - Indicadores de subida/bajada de precios
+
+### Implementación con Recharts
+
+```typescript
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+// Gráfica responsive y accesible
+<ResponsiveContainer width="100%" height="100%">
+  <LineChart
+    data={priceData}
+    role="img"
+    aria-label={`Gráfica de historial de precios para ${productName}`}
+  >
+    <Line type="monotone" dataKey="price" stroke="#3b82f6" strokeWidth={2} />
+  </LineChart>
+</ResponsiveContainer>;
+```
+
+### Datos Simulados
+
+- **Variación realista** - ±15% de variación en precios
+- **Estacionalidad** - Patrones que simulan el mercado real
+- **Límites seguros** - Precios nunca inferiores al 70% del precio base
+- **Formateo local** - Precios en pesos mexicanos (MXN)
 
 ## 🚀 Optimizaciones
 
