@@ -62,8 +62,8 @@ describe("ProductCard", () => {
     expect(screen.getByText(mockProduct.brand)).toBeInTheDocument();
     expect(screen.getByText(mockProduct.description)).toBeInTheDocument();
 
-    // Check for price - it should be formatted
-    const priceElement = screen.getByText(/\$549\.00/);
+    // Check for price - it should be formatted in MXN (549 * 19.5 = 10,705.50)
+    const priceElement = screen.getByText(/\$10,705\.50/);
     expect(priceElement).toBeInTheDocument();
   });
 
@@ -122,8 +122,8 @@ describe("ProductCard", () => {
   it("formats price correctly in Mexican Peso", () => {
     render(<ProductCard product={mockProduct} />);
 
-    // Should display formatted price with MXN currency
-    const priceElement = screen.getByText(/\$549\.00/);
+    // Should display formatted price with MXN currency (549 * 19.5 = 10,705.50)
+    const priceElement = screen.getByText(/\$10,705\.50/);
     expect(priceElement).toBeInTheDocument();
   });
 

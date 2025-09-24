@@ -98,8 +98,8 @@ describe("Product Detail Integration", () => {
   it("renders price information", () => {
     render(<ProductDetail product={mockProduct} />);
 
-    // Check for formatted price - there might be multiple instances
-    const priceElements = screen.getAllByText(/\$549\.00/);
+    // Check for formatted price in MXN (549 * 19.5 = 10,705.50) - there might be multiple instances
+    const priceElements = screen.getAllByText(/\$10,705\.50/);
     expect(priceElements.length).toBeGreaterThan(0);
   });
 
