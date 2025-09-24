@@ -79,13 +79,13 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
   };
 
   const handleSortChange = (value: string) => {
-    setLocalSort(value as any);
-    updateSort(value as any);
+    setLocalSort(value as "none" | "price" | "rating" | "title");
+    updateSort(value as "none" | "price" | "rating" | "title");
   };
 
   const handleOrderChange = (value: string) => {
-    setLocalOrder(value as any);
-    updateOrder(value as any);
+    setLocalOrder(value as "none" | "asc" | "desc");
+    updateOrder(value as "none" | "asc" | "desc");
   };
 
   const hasActiveFilters =
@@ -115,10 +115,13 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
       <CardContent className="space-y-4">
         {/* Búsqueda por texto */}
         <div className="space-y-2">
-          <label className="text-sm font-medium">Buscar productos</label>
+          <label htmlFor="search-input" className="text-sm font-medium">
+            Buscar productos
+          </label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
+              id="search-input"
               placeholder="Buscar por nombre, marca o descripción..."
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -140,9 +143,13 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
             {isDebouncing && (
               <div
                 className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                aria-label="Buscando..."
+                aria-live="polite"
               >
-                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <div
+                  className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">Buscando...</span>
               </div>
             )}
           </div>
@@ -152,9 +159,11 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Categoría */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Categoría</label>
+            <label htmlFor="category-select" className="text-sm font-medium">
+              Categoría
+            </label>
             <Select value={localCategory} onValueChange={handleCategoryChange}>
-              <SelectTrigger>
+              <SelectTrigger id="category-select">
                 <SelectValue placeholder="Todas las categorías" />
               </SelectTrigger>
               <SelectContent>
@@ -170,9 +179,11 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
 
           {/* Ordenar por */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Ordenar por</label>
+            <label htmlFor="sort-select" className="text-sm font-medium">
+              Ordenar por
+            </label>
             <Select value={localSort} onValueChange={handleSortChange}>
-              <SelectTrigger>
+              <SelectTrigger id="sort-select">
                 <SelectValue placeholder="Ordenar por..." />
               </SelectTrigger>
               <SelectContent>
@@ -186,13 +197,15 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
 
           {/* Orden */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Orden</label>
+            <label htmlFor="order-select" className="text-sm font-medium">
+              Orden
+            </label>
             <Select
               value={localOrder}
               onValueChange={handleOrderChange}
               disabled={!localSort || localSort === "none"}
             >
-              <SelectTrigger>
+              <SelectTrigger id="order-select">
                 <SelectValue placeholder="Seleccionar orden" />
               </SelectTrigger>
               <SelectContent>
@@ -221,7 +234,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
         {/* Filtros activos */}
         {hasActiveFilters && (
           <div className="space-y-2">
-            <label className="text-sm font-medium">Filtros activos:</label>
+            <span className="text-sm font-medium">Filtros activos:</span>
             <div className="flex flex-wrap gap-2">
               {state.q && (
                 <Badge variant="secondary" className="flex items-center gap-1">

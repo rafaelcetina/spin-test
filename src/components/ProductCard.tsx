@@ -124,7 +124,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star
-                  key={i}
+                  key={`star-${i}`}
                   className={`w-4 h-4 ${
                     i < Math.floor(rating)
                       ? "fill-yellow-400 text-yellow-400"

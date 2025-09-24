@@ -55,7 +55,16 @@ export function useProducts(
   const currentRequestRef = useRef<string | null>(null);
 
   const fetchProducts = useCallback(async () => {
-    const cacheKey = createCacheKey(options);
+    const cacheKey = createCacheKey({
+      q,
+      category,
+      sort,
+      order,
+      page,
+      limit,
+      retries,
+      delay,
+    });
 
     // Verificar cache
     const cached = cache.get(cacheKey);
@@ -149,17 +158,30 @@ export function useProducts(
         setLoading(false);
       }
     }
-  }, [options, q, category, sort, order, page, limit, retries, delay]);
+  }, [q, category, sort, order, page, limit, retries, delay]);
 
   const refetch = useCallback(() => {
     // Limpiar cache para forzar refetch
-    const cacheKey = createCacheKey(options);
+    const cacheKey = createCacheKey({
+      q,
+      category,
+      sort,
+      order,
+      page,
+      limit,
+      retries,
+      delay,
+    });
     cache.delete(cacheKey);
     fetchProducts();
-  }, [fetchProducts, options]);
+  }, [fetchProducts, q, category, sort, order, page, limit, retries, delay]);
+
+  // Usar useRef para evitar el problema de dependencias del linter
+  const fetchProductsRef = useRef(fetchProducts);
+  fetchProductsRef.current = fetchProducts;
 
   useEffect(() => {
-    fetchProducts();
+    fetchProductsRef.current();
 
     // Cleanup
     return () => {
@@ -167,7 +189,7 @@ export function useProducts(
         abortControllerRef.current.abort();
       }
     };
-  }, [q, category, sort, order, page, limit, retries, delay]); // Dependencias directas en lugar de fetchProducts
+  }, [q, category, sort, order, page, limit, retries, delay]);
 
   // Calcular paginación
   const totalPages = Math.ceil(total / limit);

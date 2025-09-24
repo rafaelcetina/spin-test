@@ -41,7 +41,8 @@
         "useAriaPropsSupportedByRole": "warn"
       },
       "correctness": {
-        "noUnusedImports": "warn"
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": "warn"
       }
     },
     "domains": {

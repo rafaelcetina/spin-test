@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useReducer,
+  useRef,
 } from "react";
 import type { SearchFilters } from "@/types/product";
 
@@ -158,9 +159,13 @@ function SearchFiltersProviderInner({
     }
   }, [searchParams, state.isInitialized]);
 
+  // Ref para evitar bucles infinitos
+  const isUpdatingUrlRef = useRef(false);
+  const lastStateRef = useRef<string>("");
+
   // Actualizar URL cuando cambie el estado
   useEffect(() => {
-    if (state.isInitialized) {
+    if (state.isInitialized && !isUpdatingUrlRef.current) {
       const params = new URLSearchParams();
 
       if (state.q) params.set("q", state.q);
@@ -175,12 +180,24 @@ function SearchFiltersProviderInner({
         params.set("limit", state.limit.toString());
 
       const newUrl = params.toString() ? `?${params.toString()}` : "";
-      const currentUrl = searchParams.toString()
-        ? `?${searchParams.toString()}`
-        : "";
+      const currentStateString = JSON.stringify({
+        q: state.q,
+        category: state.category,
+        sort: state.sort,
+        order: state.order,
+        page: state.page,
+        limit: state.limit,
+      });
 
-      if (newUrl !== currentUrl) {
+      // Solo actualizar si el estado realmente cambió
+      if (currentStateString !== lastStateRef.current) {
+        lastStateRef.current = currentStateString;
+        isUpdatingUrlRef.current = true;
         router.replace(newUrl, { scroll: false });
+        // Reset flag after a short delay
+        setTimeout(() => {
+          isUpdatingUrlRef.current = false;
+        }, 100);
       }
     }
   }, [state, router]); // Removido searchParams de las dependencias
