@@ -11,11 +11,11 @@ const EXCHANGE_RATE = 19.5;
  * @returns Precio formateado en MXN (ej: "$1,234.56")
  */
 export function formatPrice(price: number): string {
-    const priceInMXN = price * EXCHANGE_RATE;
-    return new Intl.NumberFormat("es-MX", {
-        style: "currency",
-        currency: "MXN",
-    }).format(priceInMXN);
+  const priceInMXN = price * EXCHANGE_RATE;
+  return new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+  }).format(priceInMXN);
 }
 
 /**
@@ -24,10 +24,10 @@ export function formatPrice(price: number): string {
  * @returns Precio formateado en MXN (ej: "$1,234.56")
  */
 export function formatPriceMXN(price: number): string {
-    return new Intl.NumberFormat("es-MX", {
-        style: "currency",
-        currency: "MXN",
-    }).format(price);
+  return new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+  }).format(price);
 }
 
 /**
@@ -35,7 +35,7 @@ export function formatPriceMXN(price: number): string {
  * @returns Tasa de cambio USD a MXN
  */
 export function getExchangeRate(): number {
-    return EXCHANGE_RATE;
+  return EXCHANGE_RATE;
 }
 
 /**
@@ -44,5 +44,5 @@ export function getExchangeRate(): number {
  * @returns Precio en MXN
  */
 export function convertUSDToMXN(priceUSD: number): number {
-    return priceUSD * EXCHANGE_RATE;
+  return priceUSD * EXCHANGE_RATE;
 }
