@@ -53,7 +53,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), "dd MMMM yyyy", { locale: es });
+      return format(new Date(dateString), "dd MMMM yyyy HH:mm", { locale: es });
     } catch {
       return "Fecha no disponible";
     }
