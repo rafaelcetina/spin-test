@@ -103,7 +103,7 @@ El endpoint `/api/dummy/products` actúa como proxy de DummyJSON con las siguien
 
 ### Transformaciones añadidas
 
-- `localPrice` - Precio formateado en EUR
+- `localPrice` - Precio formateado en MXN
 - `stockStatus` - Estado del stock (in_stock, low_stock, out_of_stock)
 - `fetchedAt` - Timestamp de cuando se obtuvo el dato
 
