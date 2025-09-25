@@ -94,7 +94,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="mb-4 sticky top-0 bg-background/60 backdrop-blur-md z-10 border border-border rounded-lg p-0">
-        <Button variant="ghost" asChild className="m-0 p-6">
+        <Button variant="ghost" asChild className="m-0 p-6 cursor-pointer">
           <Link
             href="#"
             onClick={() => history.back()}
