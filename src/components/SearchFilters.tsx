@@ -135,7 +135,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               placeholder="Buscar por nombre, marca o descripción..."
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10 pr-10"
+              className="pl-10 pr-10 bg-white"
               aria-label="Buscar productos"
               aria-describedby="search-help"
             />
@@ -173,7 +173,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               Categoría
             </label>
             <Select value={localCategory} onValueChange={handleCategoryChange}>
-              <SelectTrigger id="category-select">
+              <SelectTrigger id="category-select" className="bg-white">
                 <SelectValue placeholder="Todas las categorías" />
               </SelectTrigger>
               <SelectContent>
@@ -193,7 +193,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               Ordenar por
             </label>
             <Select value={localSort} onValueChange={handleSortChange}>
-              <SelectTrigger id="sort-select">
+              <SelectTrigger id="sort-select" className="bg-white">
                 <SelectValue placeholder="Ordenar por..." />
               </SelectTrigger>
               <SelectContent>
@@ -215,7 +215,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               onValueChange={handleOrderChange}
               disabled={!localSort || localSort === "none"}
             >
-              <SelectTrigger id="order-select">
+              <SelectTrigger id="order-select" className="bg-white">
                 <SelectValue placeholder="Seleccionar orden" />
               </SelectTrigger>
               <SelectContent>
