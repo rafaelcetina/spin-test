@@ -40,7 +40,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
   const [localCategory, setLocalCategory] = useState(state.category);
   const [localSort, setLocalSort] = useState(state.sort);
   const [localOrder, setLocalOrder] = useState(state.order);
-
+  const [showFilters, setShowFilters] = useState(true);
   // Actualizar búsqueda cuando el valor debounced cambie
   useEffect(() => {
     updateSearch(debouncedValue);
@@ -100,20 +100,30 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
         <CardTitle className="flex items-center gap-2">
           <Filter className="w-5 h-5" />
           Filtros de búsqueda
-          {hasActiveFilters && (
-            <Badge variant="secondary" className="ml-auto">
-              {
-                [state.q, state.category, state.sort, state.order].filter(
-                  Boolean,
-                ).length
-              }{" "}
-              activos
-            </Badge>
-          )}
+          <div className="flex items-center gap-2 ml-auto">
+            {hasActiveFilters && (
+              <Badge variant="secondary" className="ml-auto w-fit">
+                {
+                  [state.q, state.category, state.sort, state.order].filter(
+                    Boolean,
+                  ).length
+                }{" "}
+                activos
+              </Badge>
+            )}
+            <Button
+              className="ml-auto"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <Filter className="w-5 h-5" />
+              {showFilters ? "Ocultar filtros" : "Mostrar filtros"}
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Búsqueda por texto */}
+      <CardContent className={`space-y-4 ${showFilters ? "block" : "hidden"}`}>
         <div className="space-y-2">
           <label htmlFor="search-input" className="text-sm font-medium">
             Buscar productos
@@ -156,7 +166,7 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
         </div>
 
         {/* Filtros en grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Categoría */}
           <div className="space-y-2">
             <label htmlFor="category-select" className="text-sm font-medium">
@@ -215,21 +225,24 @@ export function SearchFilters({ categories, className }: SearchFiltersProps) {
               </SelectContent>
             </Select>
           </div>
-        </div>
 
-        {/* Botón de reset */}
-        {hasActiveFilters && (
-          <div className="flex justify-end">
-            <Button
-              variant="outline"
-              onClick={resetFilters}
-              className="flex items-center gap-2"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Limpiar filtros
-            </Button>
+          {/* Botón de reset */}
+          <div className="space-y-2">
+            {/* Botón de reset */}
+            {hasActiveFilters && (
+              <div className="flex justify-end">
+                <Button
+                  variant="outline"
+                  onClick={resetFilters}
+                  className="flex items-center gap-2"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Limpiar filtros
+                </Button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
         {/* Filtros activos */}
         {hasActiveFilters && (
